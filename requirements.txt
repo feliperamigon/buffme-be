@@ -1,0 +1,7 @@
+# Production dependencies
+# requirements.txt
+
+flask
+gunicorn
+flask_restful
+requests

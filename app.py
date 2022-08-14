@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify
 from flask_restful import Resource, Api
 import requests as r
 
@@ -12,7 +12,7 @@ TRN_API_KEY = 'fd75b598-5e7f-4de9-a6ba-f3e39f918876'
 class Home(Resource):
 
     def get(self):
-        return jsonify({'message': 'Hello World!'})
+        return jsonify({'message': 'Buffme Flask API!'})
 
 class Profile(Resource):
 
