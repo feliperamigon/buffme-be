@@ -5,3 +5,4 @@ flask
 gunicorn
 flask_restful
 requests
+firebase-admin
