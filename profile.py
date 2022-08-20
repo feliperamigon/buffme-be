@@ -1,4 +1,4 @@
-from buffmeapi.firestore import db
+from firestore import db
 
 
 def insert_user(user):
