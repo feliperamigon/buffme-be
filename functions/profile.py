@@ -1,4 +1,4 @@
-from functions.functions.firestore import db
+from functions.firestore import db
 
 
 def insert_user(user):
