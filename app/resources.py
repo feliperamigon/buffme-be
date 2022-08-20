@@ -4,12 +4,12 @@ import requests as r
 from app.settings import TRN_API_KEY, PUBLIC_TRN_URL
 
 # Models
-from app.modules.models import User
+from app.models import User
 import json
 from json import JSONDecodeError
 
 # Functions
-import app.functions.profile as fs_profile
+import app.profile as fs_profile
 
 URL_HEADERS = {'TRN-Api-Key': TRN_API_KEY}
 
@@ -18,6 +18,7 @@ class Home(Resource):
 
     def get(self):
         return jsonify({'message': 'Buffme Flask API!'})
+
 
 class Profile(Resource):
 
@@ -32,6 +33,7 @@ class Profile(Resource):
             print('Profile has been saved.')
         except JSONDecodeError:
             print('Profile data could not be serialized')
+
 
 class Stats(Resource):
 
