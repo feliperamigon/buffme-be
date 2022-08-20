@@ -18,8 +18,6 @@ def ping():
 
 # Adding the defined resources along with their corresponding urls
 
-app.register_blueprint()
-
 api.add_resource(resources.Home, '/')
 api.add_resource(resources.Profile, '/profile/<string:profile_user_identifier>')
 api.add_resource(resources.Stats, '/stats/<string:profile_user_identifier>/<string:segment_type>')
