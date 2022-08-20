@@ -1,10 +1,10 @@
 from flask import Flask
 from flask_restful import Api
 
-from modules import MODULES_BLUEPRINT
-from functions import FUNCTIONS_BLUEPRINT
+from app.modules import modules_bp
+from app.functions import functions_bp
 
-from modules.resources import Home, Profile, Stats
+from app.modules.resources import Home, Profile, Stats
 
 # Creating the flask app
 app = Flask(__name__)
@@ -13,8 +13,8 @@ app = Flask(__name__)
 api = Api(app)
 
 # Register blueprints
-app.register_blueprint(MODULES_BLUEPRINT)
-app.register_blueprint(FUNCTIONS_BLUEPRINT)
+app.register_blueprint(modules_bp)
+app.register_blueprint(functions_bp)
 
 # Adding the defined resources along with their corresponding urls
 api.add_resource(Home, '/')
