@@ -1,15 +1,15 @@
 from flask import jsonify
 from flask_restful import Resource
 import requests as r
-from app.settings import TRN_API_KEY, PUBLIC_TRN_URL
+from buffmeapi.settings import TRN_API_KEY, PUBLIC_TRN_URL
 
 # Models
-from app.models import User
+from buffmeapi.models import User
 import json
 from json import JSONDecodeError
 
 # Functions
-import app.profile as fs_profile
+import buffmeapi.profile as fs_profile
 
 URL_HEADERS = {'TRN-Api-Key': TRN_API_KEY}
 

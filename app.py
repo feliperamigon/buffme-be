@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_restful import Api
 
-from app import resources
+from buffmeapi import resources
 
 # Creating the flask app
 app = Flask(__name__)
@@ -17,6 +17,8 @@ def ping():
     return '', 204
 
 # Adding the defined resources along with their corresponding urls
+
+
 api.add_resource(resources.Home, '/')
 api.add_resource(resources.Profile, '/profile/<string:profile_user_identifier>')
 api.add_resource(resources.Stats, '/stats/<string:profile_user_identifier>/<string:segment_type>')

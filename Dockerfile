@@ -12,5 +12,5 @@ RUN pip install -r requirements.txt
 
 COPY app.py .
 
-# Run gunicorn with the first “app” parameter as the module
+# Run gunicorn with the first “buffmeapi” parameter as the module
 CMD ["gunicorn"  , "-b", "0.0.0.0:8888", "app:app"]
