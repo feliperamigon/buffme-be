@@ -12,5 +12,4 @@ RUN pip install -r requirements.txt
 
 COPY entrypoint.py .
 
-# Run gunicorn with the first “buffmeapi” parameter as the module
-CMD ["gunicorn"  , "-b", "0.0.0.0:8888", "entrypoint:app"]
+CMD ["python3"  , "entrypoint.py"]
