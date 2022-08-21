@@ -10,4 +10,5 @@ WORKDIR /buffme-be
 # Install dependencies from requirements.txt
 RUN pip install -r requirements.txt
 
-CMD python entrypoint.py
+# Run gunicorn with the first “entrypoint” parameter as the module
+CMD ["gunicorn"  , "-b", "0.0.0.0:8888", "entrypoint:app"]
