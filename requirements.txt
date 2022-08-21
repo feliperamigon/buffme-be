@@ -2,7 +2,7 @@
 # requirements.txt
 
 flask
-gunicorn
 flask_restful
+gunicorn
 requests
 firebase-admin

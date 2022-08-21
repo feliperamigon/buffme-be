@@ -10,7 +10,7 @@ COPY requirements.txt /
 # Install dependencies from requirements.txt
 RUN pip install -r requirements.txt
 
-COPY app.py .
+COPY entrypoint.py .
 
 # Run gunicorn with the first “buffmeapi” parameter as the module
-CMD ["gunicorn"  , "-b", "0.0.0.0:8888", "app:app"]
+CMD ["gunicorn"  , "-b", "0.0.0.0:8888", "entrypoint:app"]
