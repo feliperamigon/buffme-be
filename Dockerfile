@@ -5,11 +5,9 @@ FROM python:alpine3.7
 RUN pip install -U pip
 RUN pip install -U setuptools
 
-COPY requirements.txt /
-
+ADD . /buffme-be
+WORKDIR /buffme-be
 # Install dependencies from requirements.txt
 RUN pip install -r requirements.txt
 
-COPY entrypoint.py .
-
-CMD ["python3"  , "entrypoint.py"]
+CMD python entrypoint.py
