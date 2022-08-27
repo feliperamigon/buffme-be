@@ -18,13 +18,103 @@ GCP_CERTIFICATE = {
 cred = credentials.Certificate(GCP_CERTIFICATE)
 firebase_admin.initialize_app(cred)
 
+# Initialize firestore client
 db = firestore.client()
 
 
-def insert_user(user):
-    users_collection = db.collection('users')
-    if users_collection.document(user['platform_user_id']).get():
-        # TODO: Update user
-        print('User already exists')
+# Gets user document, if user does not exists, will create it otherwise will update the document
+def get_user(user):
+    users_ref = db.collection('users').document(user['platform_user_id'])
+    doc = users_ref.get()
+    if doc.exists:
+        return update_user(user)
     else:
-        users_collection.set(user)
+        return insert_user(user)
+
+
+# Update users document
+def update_user(user):
+    users_ref = db.collection('users')
+    users_ref.document(user['platform_user_id']).update({
+        'avatar': user['avatar'],
+        'platform_username': user['platform_username'],
+        'lifetime_stats': user['lifetime_stats'],
+    })
+    return {'data': users_ref.document(user['platform_user_id']).get().to_dict(),
+            'action': 'update',
+            'status': 200
+            }
+
+
+# Inserts an users document
+def insert_user(user):
+    users_ref = db.collection('users').doc(user['platform_user_id'])
+    users_ref.set(user)
+    return {'data': users_ref.document(user['platform_user_id']).get().to_dict(),
+            'action': 'create',
+            'status': 200
+            }
+
+
+# Gets maps_stats document, if  does not exists will create it otherwise will update the document
+def get_map_stats(stats):
+    maps_ref = db.collection('map_stats').document(stats['platform_user_id'])
+    doc = maps_ref.get()
+    if doc.exists:
+        return updated_map_stats(stats)
+    else:
+        return insert_map_stats(stats)
+
+
+# Update map_stats document
+def updated_map_stats(stats):
+    maps_ref = db.collection('map_stats')
+    maps_ref.document(stats['platform_user_id']).update({
+        'stats': stats['stats']
+    })
+    return {'data': maps_ref.document(stats['platform_user_id']).get().to_dict(),
+            'action': 'update',
+            'status': 200
+            }
+
+
+# Inserts map_stats document
+def insert_map_stats(stats):
+    maps_ref = db.collection('map_stats').document(stats['platform_user_id'])
+    maps_ref.set(stats)
+    return {'data': maps_ref.get().to_dict(),
+            'action': 'create',
+            'status': 200
+            }
+
+
+# Gets weapon_stats document, if  does not exists will create it otherwise will update the document
+def get_weapon_stats(stats):
+    weapons_ref = db.collection('weapon_stats').document(stats['platform_user_id'])
+    doc = weapons_ref.get()
+    if doc.exists:
+        return updated_map_stats(stats)
+    else:
+        return insert_weapon_stats(stats)
+
+
+# Update weapon_stats document
+def updated_weapon_stats(stats):
+    weapons_ref = db.collection('weapon_stats')
+    weapons_ref.document(stats['platform_user_id']).update({
+        'stats': stats['stats']
+    })
+    return {'data': weapons_ref.document(stats['platform_user_id']).get().to_dict(),
+            'action': 'update',
+            'status': 200
+            }
+
+
+# Inserts weapon_stats document
+def insert_weapon_stats(stats):
+    weapons_ref = db.collection('weapon_stats').document(stats['platform_user_id'])
+    weapons_ref.set(stats)
+    return {'data': weapons_ref.get().to_dict(),
+            'action': 'create',
+            'status': 200
+            }

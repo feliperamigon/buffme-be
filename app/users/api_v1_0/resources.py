@@ -3,10 +3,10 @@ from flask_restful import Api, Resource
 import json
 import requests as r
 from config.settings import TRN_API_KEY, PUBLIC_TRN_URL
-from ..models import User
+from ..models import User, Stats
 
 # Functions
-from ...firestore import insert_user
+from ...firestore import get_user, get_map_stats, get_weapon_stats
 
 URL_HEADERS = {'TRN-Api-Key': TRN_API_KEY}
 
@@ -21,16 +21,26 @@ class ProfileResource(Resource):
         response = r.get(url=profile_url, params=URL_HEADERS)
         resp_dict = json.loads(response.content)
         user_info = resp_dict['data']['platformInfo']
-        new_user = User(user_info['avatarUrl'], user_info['platformSlug'], user_info['platformUserHandle'],
-                        user_info['platformUserId'])
-        insert_user(dict(new_user))
+        lifetime_stats_overview = resp_dict['data']['segments'][0]
+        user = User(user_info['avatarUrl'],
+                    user_info['platformSlug'],
+                    user_info['platformUserHandle'],
+                    user_info['platformUserId'],
+                    lifetime_stats_overview['stats']
+                    )
+        firestore_res = get_user(dict(user))
+        return jsonify(firestore_res)
 
 
 class StatsResource(Resource):
     def get(self, profile_user_identifier, segment_type):
         stats_url = PUBLIC_TRN_URL + profile_user_identifier + '/segments/' + segment_type
-        data = r.get(url=stats_url, params=URL_HEADERS).json()
-        return jsonify({'controllers': data})
+        response = r.get(url=stats_url, params=URL_HEADERS)
+        resp_dict = json.loads(response.content)
+        stats_info = resp_dict
+        stats = Stats(profile_user_identifier, stats_info)
+        firestore_res = get_map_stats(dict(stats)) if segment_type == 'map' else get_weapon_stats(dict(stats))
+        return jsonify(firestore_res)
 
 
 class PingResource(Resource):
