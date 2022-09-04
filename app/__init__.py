@@ -1,5 +1,7 @@
 from flask import Flask, jsonify
 from flask_restful import Api
+from flask_restful.utils import cors
+
 
 from app.common.error_handling import ObjectNotFound, AppErrorBaseClass
 from app.firestore import db
@@ -10,7 +12,8 @@ def create_app():
     app = Flask(__name__)
 
     # Capture all 404 errors
-    Api(app, catch_all_404s=True)
+    api = Api(app, catch_all_404s=True)
+    api.decorators = [cors.crossdomain(origin='*')]
 
     # Disable strict mode when URL ends with /
     app.url_map.strict_slashes = False
