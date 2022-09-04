@@ -48,9 +48,9 @@ def update_user(user):
 
 # Inserts an users document
 def insert_user(user):
-    users_ref = db.collection('users').doc(user['platform_user_id'])
+    users_ref = db.collection('users').document(user['platform_user_id'])
     users_ref.set(user)
-    return {'data': users_ref.document(user['platform_user_id']).get().to_dict(),
+    return {'data': users_ref.get().to_dict(),
             'action': 'create',
             'status': 200
             }
