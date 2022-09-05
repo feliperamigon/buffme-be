@@ -1,5 +1,6 @@
 from flask import jsonify, Blueprint
 from flask_restful import Api, Resource
+from flask_restful.utils import cors
 import json
 import requests as r
 from config.settings import TRN_API_KEY, PUBLIC_TRN_URL
@@ -16,6 +17,8 @@ api = Api(users_v1_0_bp)
 
 
 class ProfileResource(Resource):
+    decorators = [cors.crossdomain(origin='*')]
+
     def get(self, profile_user_identifier):
         profile_url = PUBLIC_TRN_URL + profile_user_identifier
         response = r.get(url=profile_url, params=URL_HEADERS)
@@ -40,6 +43,8 @@ class ProfileResource(Resource):
 
 
 class StatsResource(Resource):
+    decorators = [cors.crossdomain(origin='*')]
+
     def get(self, profile_user_identifier, segment_type):
         stats_url = PUBLIC_TRN_URL + profile_user_identifier + '/segments/' + segment_type
         response = r.get(url=stats_url, params=URL_HEADERS)
@@ -58,6 +63,8 @@ class StatsResource(Resource):
 
 
 class PingResource(Resource):
+    decorators = [cors.crossdomain(origin='*')]
+
     def get(self):
         return '', 204
 
