@@ -1,7 +1,7 @@
 #Dockerfile
 
 # Python Alpine as our base image
-FROM python:alpine3.7
+FROM python:alpine3.10
 RUN pip install -U pip
 RUN pip install -U setuptools
 
