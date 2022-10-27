@@ -21,6 +21,7 @@ firebase_admin.initialize_app(cred)
 # Initialize firestore client
 db = firestore.client()
 
+# Gets all users documents and returns a list of them
 def get_all_users():
     all_users = []
     users = db.collection('users').stream()
