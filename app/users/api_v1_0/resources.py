@@ -7,13 +7,20 @@ from config.settings import TRN_API_KEY, PUBLIC_TRN_URL
 from ..models import User, Stats
 
 # Functions
-from ...firestore import get_user, get_map_stats, get_weapon_stats
+from ...firestore import get_user, get_map_stats, get_weapon_stats, get_all_users
 
 URL_HEADERS = {'TRN-Api-Key': TRN_API_KEY}
 
 users_v1_0_bp = Blueprint('users_v1_0_bp', __name__)
 
 api = Api(users_v1_0_bp)
+
+class AllUsersResource(Resource):
+    decorators = [cors.crossdomain(origin='*')]
+
+    def get(self):
+        firestore_response = get_all_users()
+        return jsonify(firestore_response)
 
 
 class ProfileResource(Resource):
@@ -69,6 +76,7 @@ class PingResource(Resource):
         return '', 204
 
 
+api.add_resource(AllUsersResource, '/api/users')
 api.add_resource(ProfileResource, '/api/profile/<string:profile_user_identifier>')
 api.add_resource(StatsResource, '/api/stats/<string:profile_user_identifier>/<string:segment_type>')
 api.add_resource(PingResource, '/ping')

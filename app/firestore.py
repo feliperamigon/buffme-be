@@ -21,6 +21,13 @@ firebase_admin.initialize_app(cred)
 # Initialize firestore client
 db = firestore.client()
 
+def get_all_users():
+    all_users = []
+    users = db.collection('users').stream()
+    for user in users:
+        all_users.append(user.to_dict())
+    return all_users
+
 
 # Gets user document, if user does not exists, will create it otherwise will update the document
 def get_user(user):
