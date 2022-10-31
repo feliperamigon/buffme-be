@@ -3,11 +3,11 @@ from flask_restful import Api, Resource
 from flask_restful.utils import cors
 import json
 import requests as r
-from config.settings import TRN_API_KEY, PUBLIC_TRN_URL, PUBLIC_USER_RECOMMENDATIONS_URL
+from config.settings import TRN_API_KEY, PUBLIC_TRN_URL
 from ..models import User, Stats
 
 # Functions
-from ...firestore import get_user, get_map_stats, get_weapon_stats, get_all_users
+from ...firestore import get_user, get_map_stats, get_weapon_stats, get_all_users, get_user_by_platform_username
 from ...users_recommendations import recommend_users
 
 URL_HEADERS = {'TRN-Api-Key': TRN_API_KEY}
@@ -75,10 +75,15 @@ class UserRecommendations(Resource):
 
     def get(self, profile_user_identifier):
         recommendations = recommend_users(profile_user_identifier)
+        recommended_users_list = []
+        for user in recommendations:
+            user_by_platform_username = get_user_by_platform_username(user)
+            recommended_users_list.append(user_by_platform_username[0])
+
         return jsonify({
             'type': 'Server Response',
             'status': 200,
-            'content': recommendations
+            'content': recommended_users_list
         })
 
 

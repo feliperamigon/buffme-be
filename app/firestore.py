@@ -39,6 +39,13 @@ def get_user(user):
     else:
         return insert_user(user)
 
+def get_user_by_platform_username(platform_username):
+    users = db.collection('users').where('platform_username', '==', platform_username).get()
+    users_list = []
+    for user in users:
+        users_list.append(user.to_dict())
+    return users_list
+
 
 # Update users document
 def update_user(user):
