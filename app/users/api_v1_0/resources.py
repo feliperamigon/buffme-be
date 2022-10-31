@@ -3,13 +3,15 @@ from flask_restful import Api, Resource
 from flask_restful.utils import cors
 import json
 import requests as r
-from config.settings import TRN_API_KEY, PUBLIC_TRN_URL
+from config.settings import TRN_API_KEY, PUBLIC_TRN_URL, PUBLIC_USER_RECOMMENDATIONS_URL
 from ..models import User, Stats
 
 # Functions
 from ...firestore import get_user, get_map_stats, get_weapon_stats, get_all_users
+from ...users_recommendations import recommend_users
 
 URL_HEADERS = {'TRN-Api-Key': TRN_API_KEY}
+
 
 users_v1_0_bp = Blueprint('users_v1_0_bp', __name__)
 
@@ -68,6 +70,17 @@ class StatsResource(Resource):
                 'status': response.status_code
             })
 
+class UserRecommendations(Resource):
+    decorators = [cors.crossdomain(origin='*')]
+
+    def get(self, profile_user_identifier):
+        recommendations = recommend_users(profile_user_identifier)
+        return jsonify({
+            'type': 'Server Response',
+            'status': 200,
+            'content': recommendations
+        })
+
 
 class PingResource(Resource):
     decorators = [cors.crossdomain(origin='*')]
@@ -77,6 +90,7 @@ class PingResource(Resource):
 
 
 api.add_resource(AllUsersResource, '/api/users')
+api.add_resource(UserRecommendations, '/api/get_recommendations/<string:profile_user_identifier>')
 api.add_resource(ProfileResource, '/api/profile/<string:profile_user_identifier>')
 api.add_resource(StatsResource, '/api/stats/<string:profile_user_identifier>/<string:segment_type>')
 api.add_resource(PingResource, '/ping')

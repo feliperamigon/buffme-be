@@ -7,3 +7,8 @@ flask_cors
 gunicorn
 requests
 firebase-admin
+pandas
+numpy
+sklearn
+plotly
+matplotlib
